@@ -1,5 +1,4 @@
-"# BinderDemo" 
-
+# BinderDemo
 ## 服务端
     ### 创建AIDL
     在project模式下main目录下新建AIDL文件，会自动生成与java同级目录的aidl包：
