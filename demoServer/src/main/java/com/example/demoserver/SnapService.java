@@ -3,21 +3,19 @@ package com.example.demoserver;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * FileName    :
  * Description :
+ *
+ * 当服务与所有客户端之间的绑定全部取消时，Android 系统会销毁该服务（除非还使用 startService() 调用启动了该服务）。
+ * 因此，如果您的服务是纯粹的绑定服务，则无需对其生命周期进行管理，Android 系统会根据它是否绑定到任何客户端代您管理。
  */
 public class SnapService extends Service {
     private static final String TAG = "SnapServer";
-    private List<SnapMessage> mMessages;
 
     public SnapService() {
     }
@@ -26,45 +24,13 @@ public class SnapService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate: ");
-        mMessages = new ArrayList<>();
-        initData();
     }
 
-    private void initData() {
-        int count = 5;
-        int num = 1;
-        while (num <= count) {
-            mMessages.add(new SnapMessage("text", "hello," + num));
-            num++;
-        }
-        Log.d(TAG, "initData: dataSize = " + mMessages.size());
-    }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return mStub;
+        return SnapMessageControlImpl.CREATE();
     }
 
-    private final MessageController.Stub mStub = new MessageController.Stub() {
-        @Override
-        public List<SnapMessage> getMessages() throws RemoteException {
-            Log.d(TAG, "getMessages");
-            return mMessages;
-        }
-
-        @Override
-        public void sendMessage(SnapMessage message) throws RemoteException {
-            Log.d(TAG, " sendMessage >>> " + message);
-            if (message == null) {
-                Log.d(TAG, "sendMessage: message is null");
-                return;
-            }
-            addMessage(message);
-        }
-    };
-
-    private void addMessage(SnapMessage message) {
-        mMessages.add(message);
-    }
 }
