@@ -1,3 +1,4 @@
 include ':demoServer'
 include ':app'
 rootProject.name = "BinderDemo"
+include ':base'

@@ -3,6 +3,8 @@ package com.example.demoserver;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.margin.base.utils.L;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.List;
  * Description:
  */
 public class SnapMessageControlImpl extends MessageController.Stub {
-    private static final String TAG = "SnapMessageControlImpl";
+    private static final L.TAG TAG = new L.TAG("MessageControl");
     private List<SnapMessage> mMessages;
 
     private SnapMessageControlImpl() {
@@ -26,15 +28,15 @@ public class SnapMessageControlImpl extends MessageController.Stub {
 
     @Override
     public List<SnapMessage> getMessages() throws RemoteException {
-        Log.d(TAG, "getMessages");
+        L.i(TAG, "getMessages");
         return mMessages;
     }
 
     @Override
     public void sendMessage(SnapMessage message) throws RemoteException {
-        Log.d(TAG, " sendMessage >>> " + message);
+        L.i(TAG, " sendMessage >>> " + message);
         if (message == null) {
-            Log.d(TAG, "sendMessage: message is null");
+            L.i(TAG, "sendMessage: message is null");
             return;
         }
         addMessage(message);
@@ -47,7 +49,7 @@ public class SnapMessageControlImpl extends MessageController.Stub {
             mMessages.add(new SnapMessage("text", "hello," + num));
             num++;
         }
-        Log.d(TAG, "initData: dataSize = " + mMessages.size());
+        L.d(TAG, "initData: dataSize = " + mMessages.size());
     }
 
     private void addMessage(SnapMessage message) {
